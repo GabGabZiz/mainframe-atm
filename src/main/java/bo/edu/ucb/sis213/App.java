@@ -12,7 +12,7 @@ public class App {
     private static double saldo;
     private static int pinActual;
 
-    private static final String HOST = "127.0.0.1";
+    private static final String HOST = "localhost";
     private static final int PORT = 3306;
     private static final String USER = "root";
     private static final String PASSWORD = "123456";
@@ -96,6 +96,7 @@ public class App {
             System.out.print("Seleccione una opción: ");
             int opcion = scanner.nextInt();
 
+
             switch (opcion) {
                 case 1:
                     consultarSaldo();
@@ -124,47 +125,151 @@ public class App {
     }
 
     public static void realizarDeposito() {
+        Connection connection = null;
+    
         Scanner scanner = new Scanner(System.in);
         System.out.print("Ingrese la cantidad a depositar: $");
         double cantidad = scanner.nextDouble();
-
+    
         if (cantidad <= 0) {
             System.out.println("Cantidad no válida.");
         } else {
-            saldo += cantidad;
-            System.out.println("Depósito realizado con éxito. Su nuevo saldo es: $" + saldo);
+            try {
+                connection = getConnection();
+                connection.setAutoCommit(false);
+    
+                // Actualizar el saldo en la base de datos
+                String updateQuery = "UPDATE usuarios SET saldo = saldo + ? WHERE id = ?";
+                PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+                updateStatement.setDouble(1, cantidad);
+                updateStatement.setInt(2, usuarioId);
+                updateStatement.executeUpdate();
+    
+                // Registrar la operación en el historial
+                String insertHistoricoQuery = "INSERT INTO historico (usuario_id, tipo_operacion, cantidad) VALUES (?, ?, ?)";
+                PreparedStatement historicoStatement = connection.prepareStatement(insertHistoricoQuery);
+                historicoStatement.setInt(1, usuarioId);
+                historicoStatement.setString(2, "depósito");
+                historicoStatement.setDouble(3, cantidad);
+                historicoStatement.executeUpdate();
+    
+                connection.commit();
+    
+                saldo += cantidad;
+                System.out.println("Depósito realizado con éxito. Su nuevo saldo es: $" + saldo);
+            } catch (SQLException e) {
+                try {
+                    connection.rollback();
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
+                e.printStackTrace();
+                System.out.println("Error al realizar el depósito.");
+            } finally {
+                try {
+                    connection.setAutoCommit(true);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public static void realizarRetiro() {
+        Connection connection=null;
+        
         Scanner scanner = new Scanner(System.in);
         System.out.print("Ingrese la cantidad a retirar: $");
         double cantidad = scanner.nextDouble();
-
+    
         if (cantidad <= 0) {
             System.out.println("Cantidad no válida.");
         } else if (cantidad > saldo) {
             System.out.println("Saldo insuficiente.");
         } else {
-            saldo -= cantidad;
-            System.out.println("Retiro realizado con éxito. Su nuevo saldo es: $" + saldo);
+            try {
+                connection = getConnection();
+                connection.setAutoCommit(false);
+    
+                // Actualizar el saldo en la base de datos
+                String updateQuery = "UPDATE usuarios SET saldo = saldo - ? WHERE id = ?";
+                PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+                updateStatement.setDouble(1, cantidad);
+                updateStatement.setInt(2, usuarioId);
+                updateStatement.executeUpdate();
+    
+                // Registrar la operación en el historial
+                String insertHistoricoQuery = "INSERT INTO historico (usuario_id, tipo_operacion, cantidad) VALUES (?, ?, ?)";
+                PreparedStatement historicoStatement = connection.prepareStatement(insertHistoricoQuery);
+                historicoStatement.setInt(1, usuarioId);
+                historicoStatement.setString(2, "retiro");
+                historicoStatement.setDouble(3, cantidad);
+                historicoStatement.executeUpdate();
+    
+                connection.commit();
+    
+                saldo -= cantidad;
+                System.out.println("Retiro realizado con éxito. Su nuevo saldo es: $" + saldo);
+            } catch (SQLException e) {
+                try {
+                    connection.rollback();
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
+                e.printStackTrace();
+                System.out.println("Error al realizar el retiro.");
+            } finally {
+                try {
+                    connection.setAutoCommit(true);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
     public static void cambiarPIN() {
+        Connection connection=null;
         Scanner scanner = new Scanner(System.in);
         System.out.print("Ingrese su PIN actual: ");
         int pinIngresado = scanner.nextInt();
-
+    
         if (pinIngresado == pinActual) {
             System.out.print("Ingrese su nuevo PIN: ");
             int nuevoPin = scanner.nextInt();
             System.out.print("Confirme su nuevo PIN: ");
             int confirmacionPin = scanner.nextInt();
-
+    
             if (nuevoPin == confirmacionPin) {
-                pinActual = nuevoPin;
-                System.out.println("PIN actualizado con éxito.");
+                try {
+                    connection = getConnection();
+                    connection.setAutoCommit(false);
+    
+                    String updateQuery = "UPDATE usuarios SET pin = ? WHERE id = ?";
+                    PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+                    updateStatement.setInt(1, nuevoPin);
+                    updateStatement.setInt(2, usuarioId);
+                    updateStatement.executeUpdate();
+    
+                    connection.commit();
+    
+                    pinActual = nuevoPin;
+                    System.out.println("PIN actualizado con éxito.");
+                } catch (SQLException e) {
+                    try {
+                        connection.rollback();
+                    } catch (SQLException rollbackEx) {
+                        rollbackEx.printStackTrace();
+                    }
+                    e.printStackTrace();
+                    System.out.println("Error al actualizar el PIN.");
+                } finally {
+                    try {
+                        connection.setAutoCommit(true);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             } else {
                 System.out.println("Los PINs no coinciden.");
             }
