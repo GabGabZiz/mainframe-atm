@@ -28,6 +28,7 @@ public class Inicio extends JFrame {
 			public void run() {
 				try {
 					Inicio frame = new Inicio();
+                    frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,6 +41,9 @@ public class Inicio extends JFrame {
 	 * Create the frame.
 	 */
 	public Inicio() {
+
+        Llamadas calls = new Llamadas(); // Create an instance of Calls
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 466, 333);
 		contentPane = new JPanel();
@@ -72,6 +76,7 @@ public class Inicio extends JFrame {
 		JButton btnNewButton = new JButton("Ingresar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+               calls.callIngreso();
 			}
 		});
 		btnNewButton.setBounds(181, 194, 89, 23);

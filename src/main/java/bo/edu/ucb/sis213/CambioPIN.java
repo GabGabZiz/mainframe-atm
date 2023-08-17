@@ -40,6 +40,8 @@ public class CambioPIN extends JFrame {
 	 * Create the frame.
 	 */
 	public CambioPIN() {
+        Llamadas calls = new Llamadas(); // Create an instance of Calls
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 466, 333);
 		contentPane = new JPanel();
@@ -59,6 +61,7 @@ public class CambioPIN extends JFrame {
 		JButton btnNewButton = new JButton("Salir");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+                calls.callIngreso();
 			}
 		});
 		btnNewButton.setBounds(182, 241, 89, 23);

@@ -38,6 +38,8 @@ public class Deposito extends JFrame {
 	 * Create the frame.
 	 */
 	public Deposito() {
+        Llamadas calls = new Llamadas(); // Create an instance of Calls
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 466, 333);
 		contentPane = new JPanel();
@@ -62,6 +64,7 @@ public class Deposito extends JFrame {
 		JButton btnNewButton = new JButton("Salir");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+                calls.callIngreso();
 			}
 		});
 		btnNewButton.setBounds(181, 203, 89, 23);

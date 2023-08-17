@@ -38,6 +38,8 @@ public class Retiro extends JFrame {
 	 * Create the frame.
 	 */
 	public Retiro() {
+        Llamadas calls = new Llamadas(); // Create an instance of Calls
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 466, 333);
 		contentPane = new JPanel();
@@ -54,14 +56,15 @@ public class Retiro extends JFrame {
 		contentPane.add(textField);
 		textField.setColumns(10);
 		
-		JLabel lblNewLabel_1 = new JLabel("Cambio de PIN");
+		JLabel lblNewLabel_1 = new JLabel("Retiro");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 20));
 		lblNewLabel_1.setBounds(144, 39, 158, 36);
 		contentPane.add(lblNewLabel_1);
 		
-		JButton btnNewButton = new JButton("Ingresar");
+		JButton btnNewButton = new JButton("Salir");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+                calls.callIngreso();
 			}
 		});
 		btnNewButton.setBounds(181, 203, 89, 23);
