@@ -37,7 +37,7 @@ public class Consulta extends JFrame {
 	 */
 	public Consulta() {
         Llamadas calls = new Llamadas(); // Create an instance of Calls
-
+		Metodos info= new Metodos();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 466, 333);
 		contentPane = new JPanel();
@@ -60,8 +60,9 @@ public class Consulta extends JFrame {
 		contentPane.add(btnNewButton);
 		
 		JTextArea txtrSuSaldoActual = new JTextArea();
-		txtrSuSaldoActual.setText("Su saldo actual es de:\nBs.");
+		txtrSuSaldoActual.setText(info.generacion());
 		txtrSuSaldoActual.setBounds(164, 86, 126, 97);
 		contentPane.add(txtrSuSaldoActual);
+
 	}
 }

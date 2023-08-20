@@ -67,10 +67,6 @@ public class CambioPIN extends JFrame {
 		btnNewButton.setBounds(182, 241, 89, 23);
 		contentPane.add(btnNewButton);
 		
-		btnAceptar = new JButton("Aceptar");
-		btnAceptar.setBounds(182, 200, 89, 23);
-		contentPane.add(btnAceptar);
-		
 		passwordField = new JPasswordField();
 		passwordField.setBounds(54, 132, 121, 29);
 		contentPane.add(passwordField);
@@ -90,5 +86,18 @@ public class CambioPIN extends JFrame {
 		passwordField_2 = new JPasswordField();
 		passwordField_2.setBounds(277, 154, 121, 29);
 		contentPane.add(passwordField_2);
+
+		btnAceptar = new JButton("Aceptar");
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Metodos info = new Metodos();
+				int pinActual = Integer.parseInt(passwordField.getText());
+				int pinNuevo =  Integer.parseInt(passwordField_1.getText());
+				int pinNuevoConf =  Integer.parseInt(passwordField_2.getText());
+				info.cambiarPIN(pinActual,pinNuevo,pinNuevoConf);
+			}
+		});
+		btnAceptar.setBounds(182, 200, 89, 23);
+		contentPane.add(btnAceptar);
 	}
 }

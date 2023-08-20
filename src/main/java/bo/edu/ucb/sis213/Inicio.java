@@ -19,10 +19,9 @@ public class Inicio extends JFrame {
 	private JTextField textField;
 	private JLabel lblContrasea;
 	private JPasswordField passwordField;
-
-	/**
-	 * Launch the application.
-	 */
+	protected static String usuario;
+	protected static int pin;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -37,13 +36,10 @@ public class Inicio extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public Inicio() {
 
         Llamadas calls = new Llamadas(); // Create an instance of Calls
-
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 466, 333);
 		contentPane = new JPanel();
@@ -76,10 +72,30 @@ public class Inicio extends JFrame {
 		JButton btnNewButton = new JButton("Ingresar");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-               calls.callIngreso();
+				Metodos info=new Metodos();
+				usuario = textField.getText();
+				pin = Integer.parseInt(passwordField.getText());
+				int intentos = 3;
+				while (intentos > 0) {
+					if (info.validarPIN(usuario, pin)) {
+						
+						calls.callIngreso();
+						break;
+					} 
+					else {
+						intentos--;
+						if (intentos > 0) {
+							System.out.println("PIN incorrecto. Le quedan " + intentos + " intentos.");
+						} else {
+							System.out.println("PIN incorrecto. Ha excedido el número de intentos.");
+							System.exit(0);
+						}
+					}
+				}               
 			}
 		});
 		btnNewButton.setBounds(181, 194, 89, 23);
 		contentPane.add(btnNewButton);
 	}
+
 }

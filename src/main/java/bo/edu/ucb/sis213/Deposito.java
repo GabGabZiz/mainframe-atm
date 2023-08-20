@@ -71,6 +71,13 @@ public class Deposito extends JFrame {
 		contentPane.add(btnNewButton);
 		
 		btnAceptar = new JButton("Aceptar");
+		btnAceptar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Metodos info=new Metodos();
+				double cantidad = Double.parseDouble(textField.getText()); 
+				info.realizarDeposito(cantidad);
+			}
+		});
 		btnAceptar.setBounds(181, 162, 89, 23);
 		contentPane.add(btnAceptar);
 	}
