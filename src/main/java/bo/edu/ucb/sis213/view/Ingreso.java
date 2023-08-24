@@ -1,4 +1,4 @@
-package bo.edu.ucb.sis213;
+package bo.edu.ucb.sis213.view;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;

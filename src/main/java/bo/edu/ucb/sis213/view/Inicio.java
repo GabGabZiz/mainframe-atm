@@ -1,4 +1,4 @@
-package bo.edu.ucb.sis213;
+package bo.edu.ucb.sis213.view;
 
 import java.awt.EventQueue;
 
@@ -6,12 +6,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import bo.edu.ucb.sis213.BLogic.Metodos;
 
 public class Inicio extends JFrame {
 
@@ -21,6 +23,7 @@ public class Inicio extends JFrame {
 	private JPasswordField passwordField;
 	protected static String usuario;
 	protected static int pin;
+	protected static int intentos = 3;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -75,27 +78,33 @@ public class Inicio extends JFrame {
 				Metodos info=new Metodos();
 				usuario = textField.getText();
 				pin = Integer.parseInt(passwordField.getText());
-				int intentos = 3;
-				while (intentos > 0) {
-					if (info.validarPIN(usuario, pin)) {
-						
-						calls.callIngreso();
-						break;
-					} 
-					else {
-						intentos--;
-						if (intentos > 0) {
-							System.out.println("PIN incorrecto. Le quedan " + intentos + " intentos.");
-						} else {
-							System.out.println("PIN incorrecto. Ha excedido el número de intentos.");
-							System.exit(0);
-						}
+				//ver si se puede hacer con un case
+				String cad="";
+				if (info.validarPIN(usuario, pin)) {
+					cad = "Ingreso exitoso.";
+					JOptionPane.showMessageDialog(contentPane, cad, "¡Bienvenido!",  JOptionPane.INFORMATION_MESSAGE);
+					dispose();
+					calls.callIngreso();
+				} else {
+					intentos--;
+					limpiar();
+					if (intentos > 0) {
+						cad ="PIN incorrecto. Le quedan " + intentos + " intentos.";
+						JOptionPane.showMessageDialog(contentPane, cad, "Error de Inicio de Sesión", JOptionPane.ERROR_MESSAGE);
+					} else {
+						cad ="PIN incorrecto. Ha excedido el número de intentos.";
+						JOptionPane.showMessageDialog(contentPane, cad, "Error de Inicio de Sesión", JOptionPane.ERROR_MESSAGE);
+						System.exit(0);
 					}
-				}               
+				} 	
 			}
 		});
 		btnNewButton.setBounds(181, 194, 89, 23);
 		contentPane.add(btnNewButton);
-	}
 
+	}
+	public void limpiar(){
+		textField.setText("");
+		passwordField.setText("");
+	}
 }

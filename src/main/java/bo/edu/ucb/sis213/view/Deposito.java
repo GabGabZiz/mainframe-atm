@@ -1,4 +1,4 @@
-package bo.edu.ucb.sis213;
+package bo.edu.ucb.sis213.view;
 
 import java.awt.EventQueue;
 
@@ -6,11 +6,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import bo.edu.ucb.sis213.BLogic.Metodos;
 
 public class Deposito extends JFrame {
 
@@ -64,6 +66,7 @@ public class Deposito extends JFrame {
 		JButton btnNewButton = new JButton("Salir");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dispose();
                 calls.callIngreso();
 			}
 		});
@@ -75,10 +78,18 @@ public class Deposito extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Metodos info=new Metodos();
 				double cantidad = Double.parseDouble(textField.getText()); 
-				info.realizarDeposito(cantidad);
+				String cad="";
+				cad=info.realizarDeposito(cantidad);
+				JOptionPane.showMessageDialog(contentPane, cad, "Deposito",  JOptionPane.INFORMATION_MESSAGE);
+				limpiar();
+				dispose();
+				calls.callIngreso();
 			}
 		});
 		btnAceptar.setBounds(181, 162, 89, 23);
 		contentPane.add(btnAceptar);
+	}
+	public void limpiar(){
+		textField.setText("");
 	}
 }
