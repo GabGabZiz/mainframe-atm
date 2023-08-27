@@ -42,7 +42,7 @@ public class ConsultasBDO {
         }
         return id;
     }
-    public double                                                                                                                                                                                                                                           saldo_Consulta(int id) 
+    public double saldo_Consulta(int id) 
     {   
         String query = "SELECT saldo FROM usuarios where id = ?";
         double saldo=-1;
