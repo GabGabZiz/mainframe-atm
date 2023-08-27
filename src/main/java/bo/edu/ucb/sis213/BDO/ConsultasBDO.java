@@ -42,17 +42,17 @@ public class ConsultasBDO {
         }
         return id;
     }
-    public int saldo_Consulta(int id) 
+    public double                                                                                                                                                                                                                                           saldo_Consulta(int id) 
     {   
         String query = "SELECT saldo FROM usuarios where id = ?";
-        int saldo=-1;
+        double saldo=-1;
         try {
             Connection con = Conexion.obtenerConexion();
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                saldo = resultSet.getInt("saldo");
+                saldo = resultSet.getDouble("saldo");
                 return saldo;
             }
         } catch (Exception e) {
@@ -170,4 +170,4 @@ public class ConsultasBDO {
             }
         }
     }
-} 
+}

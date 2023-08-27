@@ -4,9 +4,9 @@ import bo.edu.ucb.sis213.BDO.ConsultasBDO;
 
 public class Metodos {
 
-    public static int id;
-    public static int pinActual;
-    public static double saldo;
+    private static int id;
+    private static int pinActual;
+    private static double saldo;
 
     public boolean validarPIN(String usuario,int pinIngresado) 
     {   
